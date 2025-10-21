@@ -1,21 +1,59 @@
 from OpenGL.GL import *
+import numpy as np
+import math
 
-def setup_geometry(vertices):
-    vao = glGenVertexArrays(1) # cria array (cartao de instruções de como ler os dados)
-    vbo = glGenBuffers(1) # cria buffer (caixa que guarda os dados)
-    
-    glBindVertexArray(vao) # vincula a array
-    
-    glBindBuffer(GL_ARRAY_BUFFER, vbo) # define tipo de buffer, esse vincula os vértices (buffer de vértices)
-    glBufferData(GL_ARRAY_BUFFER, vertices.nbytes, vertices, GL_STATIC_DRAW) # preenche o buffer com os dados dos vértices
+def setup_geometry(vertices, attributes=[3, 3]):
+    # VBO
+    vbo = glGenBuffers(1) # Cria
+    glBindBuffer(GL_ARRAY_BUFFER, vbo) # Vincula
+    glBufferData(GL_ARRAY_BUFFER, vertices.nbytes, vertices, GL_STATIC_DRAW) # Envia
 
-    glEnableVertexAttribArray(0) # habilita o uso de "x" atributos (0 = posição)
-    glVertexAttribPointer(
-    0, # just vertex information, attribute index is 0
-    2, # size (2 components per vertex, e.g., x, y)
-    GL_FLOAT, # type of data
-    GL_FALSE, # not normalized
-    8, # stride (2 floats * 4 bytes (per float) = 8 bytes)
-    None # offset (None or 0 for start of buffer, others need ‘pad’)
-    ) # configura a array
+    # VAO
+    vao = glGenVertexArrays(1) #Cria
+    glBindVertexArray(vao) # Vincula
+
+    stride = sum(attributes) * vertices.itemsize  # Total por vértice
+    offset = 0
+    for index, size in enumerate(attributes):
+        glEnableVertexAttribArray(index)# Habilita VAO
+        glVertexAttribPointer(
+        index, # Índice do atributo
+        size, # Número de componentes por vértice
+        GL_FLOAT, # Tipo dos dados
+        GL_FALSE, # Normalização
+        stride, # Stride (tam. de cada vértice em byes)
+        ctypes.c_void_p(offset) # Offset (onde começa o primeiro valor)
+        ) # Configura
+        offset += size * vertices.itemsize
+
+    #UNBINDING
+    glBindBuffer(GL_ARRAY_BUFFER, 0) # Desvincula o VBO
+    glBindVertexArray(0) # Desvincula o VAO
     return vao, vbo
+
+def create_shader(shader_type, source): # Tipo, conteúdo/código
+    shader = glCreateShader(shader_type)
+    glShaderSource(shader, source)
+    glCompileShader(shader)
+    return shader
+
+def create_translation(tx, ty, tz):
+    return np.array([[1.0, 0.0, 0.0, tx],
+                     [0.0, 1.0, 0.0, ty],
+                     [0.0, 0.0, 1.0, tz],
+                     [0.0, 0.0, 0.0, 1.0]], dtype=np.float32)
+
+def create_scale(sx, sy, sz):
+    return np.array([[sx, 0.0, 0.0, 0.0],
+                     [0.0, sy, 0.0, 0.0],
+                     [0.0, 0.0, sz, 0.0],
+                     [0.0, 0.0, 0.0, 1.0]], dtype=np.float32)
+
+def create_rotation(angle_degrees):
+    angle_radians = math.radians(angle_degrees)
+    cos_a = math.cos(angle_radians)
+    sin_a = math.sin(angle_radians)
+    return np.array([[cos_a, -sin_a, 0.0, 0.0],
+                     [sin_a, cos_a, 0.0, 0.0],
+                     [0.0, 0.0, 1.0, 0.0],
+                     [0.0, 0.0, 0.0, 1.0]], dtype=np.float32)
