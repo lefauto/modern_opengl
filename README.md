@@ -8,6 +8,7 @@
 
 ```bash
 pip install PyOpenGL
+pip install opencv-python
 pip install glfw
 pip install numpy
 ```

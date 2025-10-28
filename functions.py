@@ -2,14 +2,14 @@ from OpenGL.GL import *
 import numpy as np
 import math
 
-def setup_geometry(vertices, attributes=[3, 3]):
+def setup_geometry(vertices, attributes):
     # VBO
     vbo = glGenBuffers(1) # Cria
     glBindBuffer(GL_ARRAY_BUFFER, vbo) # Vincula
     glBufferData(GL_ARRAY_BUFFER, vertices.nbytes, vertices, GL_STATIC_DRAW) # Envia
 
     # VAO
-    vao = glGenVertexArrays(1) #Cria
+    vao = glGenVertexArrays(1) # Cria
     glBindVertexArray(vao) # Vincula
 
     stride = sum(attributes) * vertices.itemsize  # Total por vértice

@@ -4,8 +4,6 @@ import numpy as np
 
 from functions import *
 
-import numpy as np
-
 def main():
     # 1. Initialize GLFW
     if not glfw.init():
@@ -48,9 +46,9 @@ def main():
                         ], dtype=np.float32)
 
     
-    vao_tri, vbo_tri = setup_geometry(triangle_vertices) # detalhes em functions.py
-    vao_sq, vbo_sq = setup_geometry(square_vertices)
-    
+    vao_tri, vbo_tri = setup_geometry(triangle_vertices, [3, 3]) # detalhes em functions.py
+    vao_sq, vbo_sq = setup_geometry(square_vertices, [3, 3])
+
     # 3.2 Shaders
     with open('vertex_shader.glsl', 'r') as file:
         vshader = create_shader(GL_VERTEX_SHADER, file.read())
@@ -80,8 +78,10 @@ def main():
         glUseProgram(program)
 
         # Envia a matriz de projeção para o shader
+        """ # Não enviei """
 
         # Enviar uModel_matrix para o Uniform na GPU (glUniformMatrix4fv)
+        """ # Não enviei """
 
         """ # >>> Espaço para o seu código de desenho aqui (Core) <<<
             # Vincular VAOs/VBOs dos seus desenhos """
