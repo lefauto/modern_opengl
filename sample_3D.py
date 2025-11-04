@@ -32,6 +32,11 @@ def main():
     # Dados do Triângulo (centralizado)
     # Estrutura: Posição (x, y, z) + Cor (r,g,b)
     triangle_vertices = np.array([
+        -0.5, -0.5, 1.0, 1.0, 0.0, 0.0, #V1
+        0.5, -0.5, 1.0, 0.0, 1.0, 0.0, #V2
+        0.0, 0.5, 1.0, 0.0, 0.0, 1.0 #V3
+    ], dtype=np.float32)
+    triangle_vertices = np.array([
         -0.5, -0.5, -1.0, 1.0, 0.0, 0.0, #V1
         0.5, -0.5, -1.0, 0.0, 1.0, 0.0, #V2
         0.0, 0.5, -1.0, 0.0, 0.0, 1.0 #V3
@@ -39,6 +44,14 @@ def main():
 
     # Dados do Quadrado (centralizado)
     # Usando cor sólida para todos os vértices
+    square_vertices = np.array([
+        -0.3, -0.3, 0.0, 1.0, 0.5, 0.2, # T1 V1
+        0.3, -0.3, 0.0, 1.0, 0.5, 0.2, # T1 V2
+        0.3, 0.3, 0.0, 1.0, 0.5, 0.2, # T1 V3
+        -0.3, -0.3, 0.0, 1.0, 0.5, 0.2, # T2 V1
+        0.3, 0.3, 0.0, 1.0, 0.5, 0.2, # T2 V2
+        -0.3, 0.3, 0.0, 1.0, 0.5, 0.2 # T2 V3
+    ], dtype=np.float32)
     square_vertices = np.array([
         -0.3, -0.3, -2.0, 1.0, 0.5, 0.2, # T1 V1
         0.3, -0.3, -2.0, 1.0, 0.5, 0.2, # T1 V2
@@ -62,9 +75,11 @@ def main():
 
 
     # Posição da câmera
-    eye = np.array([0.0, 0.0, 3.0], dtype=np.float32)
+    eye = np.array([0.0, 0.0, -3.0], dtype=np.float32)
+    #eye = np.array([0.0, 0.0, 3.0], dtype=np.float32)
     # Para onde a câmera olha
-    target = np.array([0.0, 0.0, -1.0], dtype=np.float32)
+    target = np.array([0.0, 0.0, 1.0], dtype=np.float32)
+    #target = np.array([0.0, 0.0, -1.0], dtype=np.float32)
     # Vetor "para cima"
     up = np.array([0.0, 1.0, 0.0], dtype=np.float32)
     # Matriz de View
